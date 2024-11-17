@@ -1,0 +1,11 @@
+debug/ecenario.o
+debug/main.o
+debug/personaje.o
+debug/reglas_juego.o
+debug/sprite.o
+debug/ventanas.o
+debug/qrc_imagenes.o
+debug/moc_ecenario.o
+debug/moc_personaje.o
+debug/moc_reglas_juego.o
+debug/moc_ventanas.o

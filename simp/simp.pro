@@ -10,13 +10,17 @@ CONFIG += c++17
 
 SOURCES += \
     ecenario.cpp \
+    enemigo.cpp \
     main.cpp \
+    personaje.cpp \
     reglas_juego.cpp \
     sprite.cpp \
     ventanas.cpp
 
 HEADERS += \
     ecenario.h \
+    enemigo.h \
+    personaje.h \
     reglas_juego.h \
     sprite.h \
     ventanas.h

@@ -14,6 +14,7 @@
 #include <QTimer>
 
 #include "ecenario.h"
+#include "personaje.h"
 #define bomberman_pixel_x_size 30
 #define bomberman_pixel_y_size 30
 #define game_scale_factor 3
@@ -33,6 +34,7 @@ private:
     QVector<QLabel *> labels;
     QGraphicsScene *scene;
     ecenario *ene;
+    personaje *homero;
     unsigned int bomberman_keys[4];
     void set_personaje_keys();
     void setup_scene();
