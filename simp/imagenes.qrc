@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>blocks.png</file>
+        <file>arcade homero.png</file>
+        <file>caiman pixel.png</file>
     </qresource>
 </RCC>

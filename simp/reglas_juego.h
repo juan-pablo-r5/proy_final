@@ -15,6 +15,8 @@
 
 #include "ecenario.h"
 #include "personaje.h"
+#include "enemigo.h"
+
 #define bomberman_pixel_x_size 30
 #define bomberman_pixel_y_size 30
 #define game_scale_factor 3
@@ -35,6 +37,8 @@ private:
     QGraphicsScene *scene;
     ecenario *ene;
     personaje *homero;
+    enemigo *cocodrilo;
+
     unsigned int bomberman_keys[4];
     void set_personaje_keys();
     void setup_scene();
