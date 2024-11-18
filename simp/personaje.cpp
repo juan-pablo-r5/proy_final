@@ -3,7 +3,7 @@
 personaje::personaje(unsigned int scale) : posX(0), posY(0), velX(homero_speed), velY(0),
     accX(0), accY(0), gravedad(9.81), coefFriccion(0.1)
 {
-    pixmap_management = new sprite("qrc:/arcade homero.png", scale);
+    pixmap_management = new sprite("qrc:/../../OneDrive/Imagens/arcade homero.png", scale);
     pixmap_management->cut_character_pixmap(set_complete_sprites());
     pixmap_management->set_design_size(homero_pixel_x_size, homero_pixel_y_size);
 
