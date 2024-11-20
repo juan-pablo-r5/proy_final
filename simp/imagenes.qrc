@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>blocks.png</file>
-        <file>../../OneDrive/Imagens/arcade homero.png</file>
-        <file>../../OneDrive/Imagens/caiman2.png</file>
+        <file>caiman2.png</file>
+        <file>sprite homero.png</file>
     </qresource>
 </RCC>

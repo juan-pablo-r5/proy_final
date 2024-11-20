@@ -3,7 +3,7 @@
 enemigo::enemigo(unsigned int scale)
     : moving_right(true) // Inicialmente se mueve a la derecha
 {
-    pixmap_management = new sprite("qrc:/../../OneDrive/Imagens/caiman2.png", scale);
+    pixmap_management = new sprite("qrc:/caiman2.png", scale);
     pixmap_management->cut_character_pixmap(set_complete_sprites());
     pixmap_management->set_design_size(cocodrilo_pixel_x_size, cocodrilo_pixel_y_size);
 
