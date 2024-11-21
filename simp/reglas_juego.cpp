@@ -6,6 +6,8 @@ reglas_juego::reglas_juego(QGraphicsView *graph, QVector<QLabel *> game_labels)
     this->graph = graph;
     labels = game_labels;
     setup_scene();
+    setup_personaje();
+    setup_enemigo();
     //generate_map();
 }
 
@@ -44,6 +46,23 @@ void reglas_juego::key_event(QKeyEvent *event)
     //pac->move(event->key(),is_valid);
 
 }
+
+void reglas_juego::setup_personaje(){
+    set_personaje_keys();
+
+    homero = new personaje(game_scale_factor);
+    homero->set_keys(bomberman_keys);
+    scene->addItem(homero);
+}
+
+/*void reglas_juego::setup_enemigo(){
+
+    cocodrilo= new enemigo(game_scale_factor);
+    cocodrilo->
+}*/
+
+
+
 
 
 //

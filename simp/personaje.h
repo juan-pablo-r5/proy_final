@@ -19,6 +19,8 @@ public:
     personaje(unsigned int scale);
     ~personaje();
 
+    void set_keys(unsigned int *keys);
+
     void actualizarMovimiento(); // Método para actualizar el movimiento del personaje
 
 private:

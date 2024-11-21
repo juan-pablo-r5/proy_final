@@ -17,6 +17,11 @@ personaje::~personaje()
     delete pixmap_management;
 }
 
+void personaje::set_keys(unsigned int *keys)
+{
+    for(unsigned int i=0;i<4;i++) this->keys[i] = keys[i];
+}
+
 QRect personaje::set_complete_sprites()
 {
     QRect dim;
