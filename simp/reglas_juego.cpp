@@ -6,9 +6,7 @@ reglas_juego::reglas_juego(QGraphicsView *graph, QVector<QLabel *> game_labels)
     this->graph = graph;
     labels = game_labels;
     setup_scene();
-    setup_personaje();
-    setup_enemigo();
-    //generate_map();
+
 }
 
 reglas_juego::~reglas_juego()
@@ -19,14 +17,37 @@ reglas_juego::~reglas_juego()
 void reglas_juego::setup_scene(){
     // Configurar la geometría de graphicsView
     graph->setGeometry(0, 0,
-                       game_scale_factor * game_map_col * game_map_size_col,
-                       game_scale_factor * game_map_rows * game_map_size_fil);
+                       game_scale_factor * game_map_col * blocks_pixel_x_size,
+                       game_scale_factor * game_map_rows * blocks_pixel_y_size);
     scene = new QGraphicsScene;
-    scene->setSceneRect(0, 0, graph->width() - 2, graph->height() - 2);
+    scene->setSceneRect(0, 0, graph->width(), graph->height());
     graph->setScene(scene);
     emit game_scene_changed();
 }
 
+void reglas_juego::generate_fondo() {
+    for (unsigned int fil = 0; fil < game_map_rows; fil++) {
+        for (unsigned int col = 0; col < game_map_col; col++) {
+            // Última fila: bloques tipo 3
+            if (fil == game_map_rows - 1) {
+                blocks[fil][col] = new ecenario(game_scale_factor, 1);
+                blocks[fil][col]->setX(game_scale_factor * blocks_pixel_x_size * col);
+                blocks[fil][col]->setY(game_scale_factor * blocks_pixel_y_size * fil);
+                scene->addItem(blocks[fil][col]);
+            }
+
+            // Penúltima fila: bloques tipo 2
+            if (fil == game_map_rows - 2) {
+                blocks[fil][col] = new ecenario(game_scale_factor, 2);
+                blocks[fil][col]->setX(game_scale_factor * blocks_pixel_x_size * col);
+                blocks[fil][col]->setY(game_scale_factor * blocks_pixel_y_size * fil);
+                scene->addItem(blocks[fil][col]);
+            }
+
+            // En el resto de la escena no agregar bloques
+        }
+    }
+}
 
 void reglas_juego::set_personaje_keys()
 {
@@ -65,10 +86,4 @@ void reglas_juego::setup_personaje(){
 
 
 
-//
-/*
-void reglas_juego::generate_map(){
-    ene= new ecenario(game_scale_factor);
-    scene->addItem(ene);
-    ene->setPos(0,0);
-}*/
+
