@@ -46,9 +46,9 @@ void reglas_juego::key_event(QKeyEvent *event)
 }
 
 
-
-
-/*void reglas_juego::generate_map(){
+//
+/*
+void reglas_juego::generate_map(){
     ene= new ecenario(game_scale_factor);
     scene->addItem(ene);
     ene->setPos(0,0);
