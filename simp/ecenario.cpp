@@ -30,17 +30,29 @@ QRect ecenario::set_complete_sprites()
 
     dim.setX(0);
     dim.setY(0);
-    dim.setHeight(1*blocks_pixel_y_size);
-    dim.setWidth(9*blocks_pixel_x_size);
+    dim.setHeight(7*blocks_pixel_y_size);
+    dim.setWidth(7*blocks_pixel_x_size);
 
     return dim;
 }
 
-QRect ecenario::set_borde()
+QRect ecenario::set_stone()
 {
     QRect dim;
 
-    dim.setX(0);
+    dim.setX(2*blocks_pixel_x_size);
+    dim.setY(2*blocks_pixel_y_size);
+    dim.setHeight(1*blocks_pixel_y_size);
+    dim.setWidth(1*blocks_pixel_x_size);
+
+    return dim;
+}
+
+QRect ecenario::set_stone_plan()
+{
+    QRect dim;
+
+    dim.setX(2*blocks_pixel_x_size);
     dim.setY(0);
     dim.setHeight(1*blocks_pixel_y_size);
     dim.setWidth(1*blocks_pixel_x_size);
@@ -48,23 +60,21 @@ QRect ecenario::set_borde()
     return dim;
 }
 
-QRect ecenario::set_fondo()
+QRect ecenario::set_roca()
 {
     QRect dim;
 
-    dim.setX(1*blocks_pixel_x_size);
-    dim.setY(1*blocks_pixel_y_size);
+    dim.setX(2*blocks_pixel_x_size);
+    dim.setY(6*blocks_pixel_y_size);
     dim.setHeight(1*blocks_pixel_y_size);
     dim.setWidth(1*blocks_pixel_x_size);
 
     return dim;
 }
 
-
-
 void ecenario::set_type_block()
 {
-    if(type == 1) setPixmap(pixmap->get_fixed_image(set_borde()));
-    else if(type == 2) setPixmap(pixmap->get_fixed_image(set_fondo()));
-
+    if(type == 1) setPixmap(pixmap->get_fixed_image(set_stone()));
+    else if(type == 2) setPixmap(pixmap->get_fixed_image(set_stone_plan()));
+    else if(type == 3)setPixmap(pixmap->get_fixed_image(set_roca()));
 }

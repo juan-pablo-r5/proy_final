@@ -37,10 +37,11 @@ void ventanas::setup_game_rules()
 
 void ventanas::set_mainwindow()
 {
-    ui->Game_window->setGeometry(0,0,ui->graphicsView->width(),
-                                 ui->graphicsView->height()*blocks_pixel_x_size*game_scale_factor);
-    ui->graphicsView->setGeometry(0,bomberman_pixel_y_size*game_scale_factor,
+    ui->Game_window->setGeometry(0, 0, ui->graphicsView->width(),
+                                 ui->graphicsView->height() + blocks_pixel_x_size * game_scale_factor);
+    ui->graphicsView->setGeometry(0, blocks_pixel_y_size * game_scale_factor+10,
                                   ui->graphicsView->width(),
                                   ui->graphicsView->height());
-    setGeometry(x(),y(),ui->Game_window->width(),ui->Game_window->height());
+    setGeometry(x(), y(), ui->Game_window->width(), ui->Game_window->height());
+
 }
