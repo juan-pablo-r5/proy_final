@@ -45,29 +45,10 @@ void reglas_juego::key_event(QKeyEvent *event)
 
 }
 
-
-void reglas_juego::generate_fondo() {
-    for (unsigned int fil = 0; fil < game_map_rows; fil++) {
-        for (unsigned int col = 0; col < game_map_col; col++) {
-            // Penúltima fila: bloques tipo 2
-            if (fil == game_map_rows - 2) {
-                blocks[fil][col] = new ecenario(game_scale_factor, 2);
-                blocks[fil][col]->setX(game_scale_factor * blocks_pixel_x_size * col);
-                blocks[fil][col]->setY(game_scale_factor * blocks_pixel_y_size * fil);
-                scene->addItem(blocks[fil][col]);
-            }
-            // Última fila: bloques tipo 3
-            if (fil == game_map_rows - 1) {
-                blocks[fil][col] = new ecenario(game_scale_factor, 1);
-                blocks[fil][col]->setX(game_scale_factor * blocks_pixel_x_size * col);
-                blocks[fil][col]->setY(game_scale_factor * blocks_pixel_y_size * fil);
-                scene->addItem(blocks[fil][col]);
-            }
-            // En el resto de la escena no agregar bloques
-        }
-    }
-}
-
-
-
-
+//
+/*
+void reglas_juego::generate_map(){
+    ene= new ecenario(game_scale_factor);
+    scene->addItem(ene);
+    ene->setPos(0,0);
+}*/
