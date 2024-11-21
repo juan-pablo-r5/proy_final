@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>blocks.png</file>
         <file>caiman2.png</file>
-        <file>sprite homero.png</file>
+        <file>arcade homero.png</file>
     </qresource>
 </RCC>

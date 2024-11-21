@@ -45,6 +45,7 @@ void reglas_juego::key_event(QKeyEvent *event)
 
 }
 
+
 //
 /*
 void reglas_juego::generate_map(){
