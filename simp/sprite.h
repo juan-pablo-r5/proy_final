@@ -14,6 +14,8 @@ public:
     void add_new_animation(QRect size, unsigned int number);
     QPixmap get_current_pixmap(unsigned int animation);
     QPixmap get_fixed_image(QRect size);
+    QPixmap get_current_pixmaps(unsigned int animation,int original_width, int original_height);
+
 
 private:
     QPixmap *main_pixmap, *character_pixmap;

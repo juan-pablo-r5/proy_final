@@ -18,6 +18,8 @@ class enemigo : public QObject, public QGraphicsPixmapItem
 public:
     enemigo(unsigned int scale);
     ~enemigo();
+    void resize_block(int new_width, int new_height);
+
 
 private:
     QRect set_complete_sprites();
@@ -27,6 +29,7 @@ private:
     sprite *pixmap_management;
     QTimer *movement_timer;
     bool moving_right;
+
 
 private slots:
     void move();
