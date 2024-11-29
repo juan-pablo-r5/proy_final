@@ -44,6 +44,8 @@ private:
 
     unsigned int bomberman_keys[4];
     void set_personaje_keys();
+    void setup_personaje();
+    void setup_enemigo();
     void setup_scene();
     void generate_fondo();
     QTimer *time;
