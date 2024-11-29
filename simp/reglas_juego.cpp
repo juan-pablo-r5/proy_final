@@ -6,6 +6,9 @@ reglas_juego::reglas_juego(QGraphicsView *graph, QVector<QLabel *> game_labels)
     this->graph = graph;
     labels = game_labels;
     setup_scene();
+    setup_personaje();
+    setup_enemigo();
+    generate_fondo();
 
 }
 
@@ -64,7 +67,7 @@ void reglas_juego::key_event(QKeyEvent *event)
     else if(static_cast<unsigned int>(event->key())==bomberman_keys[0]) is_valid = true; // object_left_movement(bomberman,bomberman_speed);
     else if(static_cast<unsigned int>(event->key())==bomberman_keys[2]) is_valid =true; //object_up_movement(bomberman,bomberman_speed);
     else if(static_cast<unsigned int>(event->key())== bomberman_keys[3]) is_valid = true; //object_down_movement(bomberman,bomberman_speed);
-    //pac->move(event->key(),is_valid);
+    homero->move(event->key(),is_valid);
 
 }
 
@@ -72,15 +75,17 @@ void reglas_juego::setup_personaje(){
     set_personaje_keys();
 
     homero = new personaje(game_scale_factor);
+    homero->setScaleFactor(0.3);
     homero->set_keys(bomberman_keys);
     scene->addItem(homero);
 }
 
-/*void reglas_juego::setup_enemigo(){
+
+void reglas_juego::setup_enemigo(){
 
     cocodrilo= new enemigo(game_scale_factor);
-    cocodrilo->
-}*/
+    scene->addItem(cocodrilo);
+}
 
 
 
