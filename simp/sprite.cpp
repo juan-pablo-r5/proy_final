@@ -43,4 +43,23 @@ QPixmap sprite::get_fixed_image(QRect size)
 }
 
 
+QPixmap sprite::get_current_pixmaps(unsigned int animation,int original_width, int original_height)
+{
+
+    // Definir las nuevas dimensiones
+    int new_width = 19;
+    int new_height = 18;
+
+    // Recortar y escalar el sprite
+    QPixmap img = character_pixmap->copy(animations[animation])
+                      .copy(animation_counter * original_width, 0, original_width, original_height)
+                      .scaled(new_width * scale, new_height * scale);
+
+    // Incrementar el contador de animaciones
+    animation_counter++;
+    if (animation_counter >= animations_size[animation])
+        animation_counter = 0;
+
+    return img;
+}
 

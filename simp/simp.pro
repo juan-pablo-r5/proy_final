@@ -12,6 +12,7 @@ SOURCES += \
     ecenario.cpp \
     enemigo.cpp \
     main.cpp \
+    meteor.cpp \
     personaje.cpp \
     reglas_juego.cpp \
     sprite.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     ecenario.h \
     enemigo.h \
+    meteor.h \
     personaje.h \
     reglas_juego.h \
     sprite.h \

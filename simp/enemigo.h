@@ -18,8 +18,11 @@ class enemigo : public QObject, public QGraphicsPixmapItem
 public:
     enemigo(unsigned int scale);
     ~enemigo();
+    void resize_block(int new_width, int new_height);
+
 
     void toggle_direction(); // Cambia la dirección del enemigo
+
 
 private slots:
     void move(); // Controla el movimiento periódico del enemigo
