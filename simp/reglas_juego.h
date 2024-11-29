@@ -17,6 +17,7 @@
 #include "personaje.h"
 #include "enemigo.h"
 #include "meteor.h"
+#include "dona.h"
 
 #define bomberman_pixel_x_size 16
 #define bomberman_pixel_y_size 16
@@ -39,6 +40,7 @@ private:
     personaje *homero;
     enemigo *cocodrilo;
     meteor *meteori;
+    dona *donas;
 
     unsigned int bomberman_keys[4];
     void set_personaje_keys();
@@ -48,14 +50,19 @@ private:
     std::vector<meteor*> active_meteors;
     void setup_meteor();
     void start_game();
-
-
+    void setup_dona();
 
 
     bool object_right_movement(QGraphicsPixmapItem *item, unsigned int speed);
     bool object_left_movement(QGraphicsPixmapItem *item, unsigned int speed);
     bool object_up_movement(QGraphicsPixmapItem *item, unsigned int speed);
     bool object_down_movement(QGraphicsPixmapItem *item, unsigned int speed);
+    int get_level_from_label();
+    void update_level_in_label(int lives);
+    int get_lives_from_label();
+    void update_lives_in_label(int lives);
+    int get_points_from_label();
+    void update_point_in_label(int lives);
 
 private slots:
     void update_game();

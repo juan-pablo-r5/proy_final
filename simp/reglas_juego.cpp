@@ -7,15 +7,17 @@ reglas_juego::reglas_juego(QGraphicsView *graph, QVector<QLabel *> game_labels)
     setup_scene();
     generate_fondo();
     setup_meteor();
-    start_game();      // Inicia el temporizador global del juego
-
+    start_game();
+    setup_dona();
+    labels[0]->setText("vidas: 7");
+    labels[1]->setText("puntos: 0");
+    labels[2]->setText("nivel: xd");
 }
 
 reglas_juego::~reglas_juego()
 {
     delete scene;
     delete time;
-
 }
 
 void reglas_juego::setup_scene(){
@@ -32,11 +34,9 @@ void reglas_juego::setup_scene(){
 void reglas_juego::generate_fondo() {
     for (unsigned int fil = 0; fil < game_map_rows; fil++) {
         for (unsigned int col = 0; col < game_map_col; col++) {
-            // Última fila: bloques tipo 3
             if (fil == game_map_rows - 1) {
                 blocks[fil][col] = new ecenario(game_scale_factor, 1);
             }
-            // Penúltima fila: bloques tipo 2
             else if (fil == game_map_rows - 2) {
                 blocks[fil][col] = new ecenario(game_scale_factor, 2);
             }
@@ -87,7 +87,14 @@ void reglas_juego::update_game()
     }
 }
 
+void reglas_juego::setup_dona()
+{
+    dona *donas = new dona(game_scale_factor);
+    donas->set_initial_conditions(3, 3, 0, 50, 0.5); // (x, y, vx, amplitud, frecuencia)
+    scene->addItem(donas);
+    donas->start_motion();
 
+}
 void reglas_juego::set_personaje_keys()
 {
     bomberman_keys[0] = Qt::Key_A;
@@ -120,8 +127,8 @@ bool reglas_juego::object_right_movement(QGraphicsPixmapItem *item, unsigned int
     xf2 = item->x() + width -1 + speed;
     yf2 = item->y() + height -1;
 
-    valid_1 = blocks[yf1/(blocks_pixel_y_size*game_scale_factor)][xf1/(blocks_pixel_x_size*game_scale_factor)]->get_type()==1;
-    valid_2 = blocks[yf2/(blocks_pixel_y_size*game_scale_factor)][xf2/(blocks_pixel_x_size*game_scale_factor)]->get_type()==1;
+    valid_1 = blocks[yf1/(blocks_pixel_y_size*game_scale_factor)][xf1/(blocks_pixel_x_size*game_scale_factor)]->get_type()!=1;
+    valid_2 = blocks[yf2/(blocks_pixel_y_size*game_scale_factor)][xf2/(blocks_pixel_x_size*game_scale_factor)]->get_type()!=2;
 
     return valid_1 && valid_2;
 
@@ -156,8 +163,8 @@ bool reglas_juego::object_up_movement(QGraphicsPixmapItem *item, unsigned int sp
     xf2 = item->x() + width -1;
     yf2 = item->y() - speed;
 
-    valid_1 = blocks[yf1/(blocks_pixel_y_size*game_scale_factor)][xf1/(blocks_pixel_x_size*game_scale_factor)]->get_type() == 0;
-    valid_2 = blocks[yf2/(blocks_pixel_y_size*game_scale_factor)][xf2/(blocks_pixel_x_size*game_scale_factor)]->get_type() == 0;
+    valid_1 = blocks[yf1/(blocks_pixel_y_size*game_scale_factor)][xf1/(blocks_pixel_x_size*game_scale_factor)]->get_type() != 1;
+    valid_2 = blocks[yf2/(blocks_pixel_y_size*game_scale_factor)][xf2/(blocks_pixel_x_size*game_scale_factor)]->get_type() != 2;
     return valid_1 && valid_2;
 }
 
@@ -180,7 +187,67 @@ bool reglas_juego::object_down_movement(QGraphicsPixmapItem *item, unsigned int 
 
     valid_2 = blocks[yf2 / (blocks_pixel_y_size * game_scale_factor)]
                     [xf2 / (blocks_pixel_x_size * game_scale_factor)]->get_type() != 2;
-
     return valid_1 && valid_2;
 }
 
+int reglas_juego::get_level_from_label()
+{
+    QString text = labels[0]->text();
+    QStringList parts = text.split(": ");
+    if (parts.size() == 2)
+    {
+        bool ok;
+        int level = parts[1].toInt(&ok);
+        if (ok)
+        {
+            return level;
+        }
+    }
+    return 0;
+}
+void reglas_juego::update_level_in_label(int lives)
+{
+    labels[0]->setText("nivel: " + QString::number(lives));
+}
+
+int reglas_juego::get_lives_from_label()
+{
+    QString text = labels[1]->text();
+    QStringList parts = text.split(": ");
+    if (parts.size() == 2)
+    {
+        bool ok;
+        int lives = parts[1].toInt(&ok);
+        if (ok)
+        {
+            return lives;
+        }
+    }
+    return 0;
+}
+
+void reglas_juego::update_lives_in_label(int lives)
+{
+    labels[1]->setText("vidas: " + QString::number(lives));
+}
+
+int reglas_juego::get_points_from_label()
+{
+    QString text = labels[2]->text();
+    QStringList parts = text.split(": ");
+    if (parts.size() == 2)
+    {
+        bool ok;
+        int point = parts[1].toInt(&ok);
+        if (ok)
+        {
+            return point;
+        }
+    }
+    return 0; // Default en caso de error
+}
+
+void reglas_juego::update_point_in_label(int lives)
+{
+    labels[2]->setText("puntos: " + QString::number(lives));
+}
