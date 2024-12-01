@@ -15,7 +15,6 @@ personaje::personaje(unsigned int scale, int x, int y): progresoSalto(0)
     posY=y;
     setPos(posX,posY);
 
-
 }
 
 personaje::~personaje()

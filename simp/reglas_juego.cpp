@@ -5,7 +5,6 @@ reglas_juego::reglas_juego(QGraphicsView *graph, QVector<QLabel *> game_labels)
     this->graph = graph;
     labels = game_labels;
     setup_scene();
-    setup_dona();
     start_game();
     labels[0]->setText("vidas: 100");
     labels[1]->setText("puntos: 0");
@@ -69,28 +68,18 @@ void reglas_juego::generate_nivel1() {
 void reglas_juego::generate_nivel2() {
     labels[2]->setText("nivel: 2");
     generate_fondo();
-    for (unsigned int col = 4; col < game_map_col; col += 4) {
-        unsigned int random_fil =  (game_map_rows - 2) + 1;
-        if(col != game_map_col){
-            //setup_rocas(random_fil, col);
-            //setup_enemigos(1,col+1);
-            if (random_fil >= 10){
-               // setup_rocas(random_fil-2, col);
-            }
-            else if (random_fil<=5){
-                //setup_rocas(random_fil+2, col);
-            }
-        }
-        if (col==24){
-            //setup_minas(6,col);
-            //setup_minas(1,col-4);
-        }
+    setup_personaje();
+
+    for (int i = 0; i < 10; i++) {
+        setup_meteor();
+        setup_enemigo2(2 + i * 6);
     }
+
 }
 void reglas_juego::setup_meteor() {
     if (active_meteors.size() >= 5) return;// max 5
 
-    int random_col = rand() % game_map_col;
+    int random_col = rand() % game_map_col-1;
     meteor *meteori = new meteor(game_scale_factor);
     meteori->set_initial_conditions(random_col * blocks_pixel_x_size * game_scale_factor, 0, 5);
     scene->addItem(meteori);
