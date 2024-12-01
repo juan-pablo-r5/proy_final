@@ -1,33 +1,23 @@
 #include "enemigo.h"
 
-enemigo::enemigo(unsigned int scale)
-    : moving_right(true), // Inicialmente se mueve a la derecha
-    current_animation_index(0) // Por defecto, comienza con la animación de la derecha
+enemigo::enemigo(unsigned int scale,Movimiento tipo_movimiento) : moving_right(true),tipo_movimiento(tipo_movimiento),
+    velocidad_x(0), velocidad_y(0)
+
 {
-    // Inicialización del sprite
-    pixmap_management = new sprite(":/caiman completo.png", scale);
+    pixmap_management = new sprite(":/caiman completo.jpeg", scale);
     pixmap_management->cut_character_pixmap(set_complete_sprites());
     pixmap_management->set_design_size(cocodrilo_pixel_x_size, cocodrilo_pixel_y_size);
 
-    // Configurar animaciones
     set_animations();
 
     setZValue(1);
-    setPixmap(pixmap_management->get_current_pixmap(0)); // Inicialmente usa el primer cuadro
+    setPixmap(pixmap_management->get_current_pixmap(0));
 
-    // Configuración del temporizador
-    movement_timer = new QTimer(this);
-    connect(movement_timer, &QTimer::timeout, this, &enemigo::move);
-    movement_timer->start(50); // Movimiento cada 30 ms
-
-    // Establecer posición inicial
-    setPos(150, 342); // Cambia estos valores por la posición inicial deseada
 }
 
 enemigo::~enemigo()
 {
-    delete pixmap_management;
-    delete movement_timer;
+    delete pixmap_management;  
 }
 
 QRect enemigo::set_complete_sprites()
@@ -35,24 +25,24 @@ QRect enemigo::set_complete_sprites()
     QRect dim;
     dim.setX(0);
     dim.setY(0);
-    dim.setHeight(2 * cocodrilo_pixel_y_size); // Dos filas de sprites
-    dim.setWidth(16 * cocodrilo_pixel_x_size); // Ocho columnas de sprites
+    dim.setHeight(2 * cocodrilo_pixel_y_size);
+    dim.setWidth(16 * cocodrilo_pixel_x_size);
     return dim;
 }
 
 void enemigo::set_animations()
 {
-    animation_right(); // Configurar animación hacia la derecha
-    animation_left();  // Configurar animación hacia la izquierda
+    animation_right();
+    animation_left();
 }
 
 void enemigo::animation_right()
 {
     QRect dim;
     dim.setX(0);
-    dim.setY(8 * cocodrilo_pixel_y_size); // Fila 1: Animación hacia la derecha
+    dim.setY(8 * cocodrilo_pixel_y_size);
     dim.setHeight(1 * cocodrilo_pixel_y_size);
-    dim.setWidth(7 * cocodrilo_pixel_x_size); // 7 cuadros
+    dim.setWidth(7 * cocodrilo_pixel_x_size);
     pixmap_management->add_new_animation(dim, 7);
 }
 
@@ -60,48 +50,78 @@ void enemigo::animation_left()
 {
     QRect dim;
     dim.setX(8* cocodrilo_pixel_x_size);
-    dim.setY(0); // Fila 0: Animación hacia la izquierda
+    dim.setY(0);
     dim.setHeight(1 * cocodrilo_pixel_y_size);
-    dim.setWidth(8 * cocodrilo_pixel_x_size); // 8 cuadros
+    dim.setWidth(8 * cocodrilo_pixel_x_size);
     pixmap_management->add_new_animation(dim, 8);
 }
 
-void enemigo::toggle_direction()
-{
-    moving_right = !moving_right; // Cambiar la dirección
 
-    // Cambiar el índice de animación según la dirección
-    if (moving_right)
+
+void enemigo::move(bool can_move)
+{
+    if (tipo_movimiento == BASE)
     {
-        current_animation_index = 0; // Índice para la animación hacia la derecha
-    }
-    else
-    {
-        current_animation_index = 1; // Índice para la animación hacia la izquierda
+        if (can_move)
+        {
+            if (moving_right)
+            {
+                setX(x() + cocodrilo_speed);
+                setPixmap(pixmap_management->get_current_pixmap(0));
+            }
+            else
+            {
+                setX(x() - cocodrilo_speed);
+                setPixmap(pixmap_management->get_current_pixmap(1));
+            }
+        }
+        else
+        {
+            moving_right = !moving_right;
+        }
     }
 }
 
-void enemigo::move()
+void enemigo::move_towards_target(QGraphicsPixmapItem *target)
 {
-    // Movimiento en una dirección
-    if (moving_right)
+    if (tipo_movimiento == ATRACCION && target)
     {
-        setX(x() + cocodrilo_speed); // Mover a la derecha
-    }
-    else
-    {
-        setX(x() - cocodrilo_speed); // Mover a la izquierda
-    }
+        float current_x = x();
+        float current_y = y();
 
-    // Actualizar el sprite actual
-    setPixmap(pixmap_management->get_current_pixmap(current_animation_index));
+        float target_x = target->x();
+        float target_y = target->y();
 
-    // Cambiar dirección cada 2 segundos
-    static int elapsed_time = 0;
-    elapsed_time += 30; // Incremento en milisegundos
-    if (elapsed_time >= 2000) // 2 segundos
-    {
-        toggle_direction(); // Cambiar dirección
-        elapsed_time = 0;   // Reiniciar el tiempo
+        float dx = target_x - current_x;
+        float dy = target_y - current_y;
+
+        // Calcular la fuerza de atracción (aceleración)
+        float distancia = sqrt(dx * dx + dy * dy);
+        if (distancia > 1) // Evitar divisiones por 0
+        {
+            float ax = fuerza_atraccion * (dx / distancia);
+            float ay = fuerza_atraccion * (dy / distancia);
+
+            velocidad_x += ax;
+            velocidad_y += ay;
+
+            velocidad_x *= 0.98;
+            velocidad_y *= 0.98;
+
+            //nuevas posiciones
+            float new_x = current_x + velocidad_x;
+            float new_y = current_y + velocidad_y;
+            setX(new_x);
+            setY(new_y);
+
+            if (velocidad_x > 0)
+            {
+                setPixmap(pixmap_management->get_current_pixmap(0));
+            }
+            else if (velocidad_x < 0)
+            {
+                setPixmap(pixmap_management->get_current_pixmap(1));
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@
       <rect>
        <x>20</x>
        <y>60</y>
-       <width>49</width>
+       <width>61</width>
        <height>16</height>
       </rect>
      </property>
@@ -69,7 +69,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>nivel:</string>
+      <string>nivel: 1</string>
      </property>
     </widget>
    </widget>

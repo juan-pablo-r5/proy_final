@@ -1,12 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>caiman2.png</file>
-        <file>arcade homero.png</file>
         <file>blocks.png</file>
-        <file>homero prueba.png</file>
-        <file>caiman completo.png</file>
+        <file>homero prueba.jpeg</file>
+        <file>caiman completo.jpeg</file>
         <file>asteroid.png</file>
         <file>explotion.png</file>
         <file>dona.png</file>
+        <file>salto.jpeg</file>
     </qresource>
 </RCC>

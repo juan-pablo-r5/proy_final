@@ -1,33 +1,26 @@
 #include "personaje.h"
 
-personaje::personaje(unsigned int scale)
-    : posX(0), posY(300), velX(0), velY(0), accX(0), accY(0),
-    gravedad(0.5), enElAire(false), fuerzaSalto(-10.0), escala(scale)
+personaje::personaje(unsigned int scale, int x, int y): progresoSalto(0)
+
 {
-    pixmap_management = new sprite(":/homero prueba.png", scale);
+    pixmap_management = new sprite(":/homero prueba.jpeg", scale);
     pixmap_management->cut_character_pixmap(set_complete_sprites());
     pixmap_management->set_design_size(homero_pixel_x_size, homero_pixel_y_size);
 
+
     set_animations();
     setZValue(1);
-    setPixmap(pixmap_management->get_current_pixmap(0));
+    setPixmap(pixmap_management->get_current_pixmaps(0, homero_pixel_x_size, homero_pixel_y_size));
+    posX=x;
+    posY=y;
+    setPos(posX,posY);
 
-    // Aplicar la escala inicial
-    setScale(escala);
 
-    // Establecer posición inicial
-    setPos(posX, posY);
 }
 
 personaje::~personaje()
 {
     delete pixmap_management;
-}
-
-void personaje::setScaleFactor(float factor)
-{
-    escala = factor;
-    setScale(escala); // Cambiar la escala del QGraphicsPixmapItem
 }
 
 void personaje::set_keys(unsigned int *keys)
@@ -37,44 +30,50 @@ void personaje::set_keys(unsigned int *keys)
 
 void personaje::move(unsigned int key, bool is_valid)
 {
-    if (key == keys[0] && is_valid) { // Movimiento a la izquierda
-        setPixmap(pixmap_management->get_current_pixmap(0));
-        posX -= homero_speed;
+    if (key == keys[0]) {
+        setPixmap(pixmap_management->get_current_pixmaps(0, homero_pixel_x_size, homero_pixel_y_size)); // Sprite izquierda
+        if (is_valid)posX -= homero_speed;
+        emit is_moving(this, true);
+
     }
-    else if (key == keys[1] && is_valid) { // Movimiento a la derecha
-        setPixmap(pixmap_management->get_current_pixmap(1));
-        posX += homero_speed;
+    else if (key == keys[1]) {
+        setPixmap(pixmap_management->get_current_pixmaps(1, homero_pixel_x_size, homero_pixel_y_size)); // Sprite derecha
+        if (is_valid)posX += homero_speed;
+        emit is_moving(this, true);
     }
-    else if (key == keys[2] && is_valid) { // Salto (tecla W)
-        if (!enElAire) { // Solo si está en el suelo
-            enElAire = true;      // Cambiar el estado a "en el aire"
-            velY = fuerzaSalto;   // Velocidad inicial hacia arriba
-            setPixmap(pixmap_management->get_current_pixmap(2)); // Sprite de salto
+    else if (key == keys[2]) {
+        if (!enElAire) {
+            enElAire = true;
+            progresoSalto=0;
+            setPixmap(pixmap_management->get_current_pixmaps(2, homero_pixel_x_size, homero_pixel_y_size));
+            qDebug() << "salto";
+
         }
     }
 
-    // Actualizar posición en pantalla
     setPos(posX, posY);
 }
 
-void personaje::actualizarMovimiento()
+
+void personaje::actualizarMovimiento(bool puedeMoverse)
 {
-    if (enElAire) { // Solo actualizar física cuando está en el aire
-        // Actualizar velocidad vertical con la gravedad
-        velY += gravedad;
-
-        // Actualizar posición vertical con la velocidad
-        posY += velY;
-
-        // Verificar si llega al suelo
-        if (posY >= 300) { // Nivel del suelo
-            posY = 300;       // Fijar la posición al nivel del suelo
-            velY = 0;         // Detener movimiento vertical
-            enElAire = false; // Permitir nuevos saltos
-            setPixmap(pixmap_management->get_current_pixmap(0)); // Cambiar al sprite de pie
+    if (enElAire) {
+        // Fase de subida
+        if (progresoSalto < alturaSalto ) {
+            qDebug() << "realidad salto";
+            posY -= 5;
+            progresoSalto += 5;
         }
-
-        // Ajustar la posición del personaje en pantalla
+        // Fase de bajada
+        else if (progresoSalto >= alturaSalto) {
+            posY += 5;
+        }
+        // Verificar si ha tocado el suelo
+        if (!puedeMoverse && progresoSalto >= alturaSalto) {
+            enElAire = false;
+            progresoSalto = 0;
+            setPixmap(pixmap_management->get_current_pixmaps(0,homero_pixel_x_size,homero_pixel_y_size));
+        }
         setPos(posX, posY);
     }
 }
@@ -93,7 +92,7 @@ void personaje::set_animations()
 {
     animation_right();
     animation_left();
-    animation_jump(); // Configurar la animación de salto
+    animation_jump();
 }
 
 void personaje::animation_right()
@@ -119,9 +118,9 @@ void personaje::animation_left()
 void personaje::animation_jump()
 {
     QRect dim;
-    dim.setX(0); // Cambia según el sprite de salto
-    dim.setY(homero_pixel_y_size); // Supongamos que el sprite de salto está en una fila diferente
+    dim.setX(0);
+    dim.setY(homero_pixel_y_size);
     dim.setHeight(1 * homero_pixel_y_size);
-    dim.setWidth(1 * homero_pixel_x_size); // Solo un cuadro para el salto
+    dim.setWidth(1 * homero_pixel_x_size);
     pixmap_management->add_new_animation(dim, 1);
 }

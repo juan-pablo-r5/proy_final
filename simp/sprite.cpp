@@ -47,8 +47,8 @@ QPixmap sprite::get_current_pixmaps(unsigned int animation,int original_width, i
 {
 
     // Definir las nuevas dimensiones
-    int new_width = 19;
-    int new_height = 18;
+    int new_width = 16;
+    int new_height = 16;
 
     // Recortar y escalar el sprite
     QPixmap img = character_pixmap->copy(animations[animation])

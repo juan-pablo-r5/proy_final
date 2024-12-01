@@ -38,10 +38,9 @@ private:
     float x, y;
     float vy;
     const float acc = 9.8;
-    QTimer *time;        // Temporizador para actualizar el movimiento
+    QTimer *time;
     int time_period=100;     // (en ms)
     float y_dimension;   // Escala para la posición vertical
-    // Manejo de sprites
     sprite *pixmap_management;
     sprite *explosion_management;
     int attempt_count = 0;

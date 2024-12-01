@@ -51,9 +51,8 @@ void meteor::time_step(bool can_move)
         attempt_count++;
         if (attempt_count < max_attempts)
         {
-            // Cambiar el sprite del meteorito
             setPixmap(explosion_management->get_current_pixmaps(0,explo_pixel_x_size,explo_pixel_y_size));
-            setPos(x, y + 10);
+            setPos(x, y);
         }
         else
         {

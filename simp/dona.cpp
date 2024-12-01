@@ -13,13 +13,13 @@ dona::dona(unsigned int scale) {
     ax = 0;
     ay = 0;
     amplitude = 50;
-    frequency = 1;
-    friction = 0.01;
+    frequency = 0.5;
+    friction = 0.003;
     time_elapsed = 0;
     time_to_reverse = 50000; // Tiempo antes de devolverse (ms)
 
 
-    time_period = 16; // ~60 FPS (16 ms por frame)
+    time_period = 30; // ~60 FPS (16 ms por frame)
     time = new QTimer(this);
     connect(time, &QTimer::timeout, this, &dona::time_step);
 
@@ -65,7 +65,6 @@ void dona::set_initial_conditions(float x, float y, float vx, float amplitude, f
     this->initial_y = y;
 
     setPos(x, y);
-
 }
 
 void dona::start_motion() {
@@ -79,31 +78,12 @@ void dona::stop_motion() {
 void dona::time_step() {
     // Incrementar el tiempo acumulado
     time_elapsed += time_period / 1000.0; // Convertir milisegundos a segundos
-
-    // **Movimiento Oscilatorio Vertical (Senoidal):**
     y = initial_y + amplitude * sin(2 * M_PI * frequency * time_elapsed);
 
-    // **Aceleración y Fricción del Aire (Eje X):**
-    // Actualizar velocidad en X con aceleración (opcional) y fricción
-    vx += ax * (time_period / 1000.0);    // Aceleración en X
-    vx *= (1.0 - friction);           // Aplicar fricción en X
+    vx += ax * (time_period / 1000.0);    // Aplicar aceleración
+    vx *= (1.0 - friction);               // Aplicar fricción
 
-    // Actualizar la posición en X
-    x += direction * vx * (time_period / 1000.0);
-
-    // **Aceleración y Fricción del Aire (Eje Y):**
-    vy += ay * (time_period / 1000.0);    // Aceleración en Y (si aplica)
-    vy *= (1.0 - friction);           // Aplicar fricción en Y
-
-    // Modificar la posición en Y con velocidad (si fuera necesario además de la senoidal)
-    // y += vy * (time_period / 1000.0);
-
-    // **Actualizar posición gráfica:**
+    x += vx * (time_period / 1000.0);
     setPos(x, y);
-    // Si ha regresado a la posición inicial, detener el movimiento
-    if (direction == -1 && x <= initial_x) {
-        stop_motion();
-        setPos(initial_x, initial_y); // Asegurar que vuelva exactamente a la posición inicial
-    }
 }
 

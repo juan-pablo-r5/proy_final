@@ -15,36 +15,34 @@ class personaje : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 
 public:
-    personaje(unsigned int scale);
+    personaje(unsigned int scale, int x, int y);
     ~personaje();
 
     void set_keys(unsigned int *keys);
     void move(unsigned int key, bool is_valid);
-    void setScaleFactor(float factor);
+    void actualizarMovimiento(bool puedeMoverse);
+
 
 private:
     QRect set_complete_sprites();
     void set_animations();
     void animation_right();
     void animation_left();
-    void animation_jump(); // Nueva animación para el salto
+    void animation_jump();
 
-    // Métodos para la física
-    void aplicarFuerzas();
-    void actualizarMovimiento();
+    float posX, posY;
+    bool enElAire;
+    float saltoAltura = 50;
+    float saltoVelocidad = 10;
+    float alturaSalto = 80;
+    float progresoSalto = 0;
 
-    // Variables para la física
-    float posX, posY;         // Posición del personaje
-    float velX, velY;         // Velocidades
-    float accX, accY;         // Aceleraciones
-    float gravedad;           // Constante de gravedad
-    float fuerzaSalto;        // Velocidad inicial del salto
-    bool enElAire;            // Bandera para indicar si está saltando
 
-    // Gestión del pixmap y animaciones
     sprite *pixmap_management;
-    unsigned int keys[4];     // Teclas de movimiento
-    float escala;             // Factor de escala
+     unsigned int keys[3];
+
+signals:
+    void is_moving(QGraphicsPixmapItem *, bool);
 };
 
 #endif // PERSONAJE_H
